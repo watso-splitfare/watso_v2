@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' show Svg;
 
 import '../../common/constants/styles.dart';
 import '../../common/widgets/Boxes.dart';
 import '../../common/widgets/Buttons.dart';
+import '../widgets/recuit_info_card.dart';
 
 class MessagingScreen extends StatefulWidget {
   const MessagingScreen({super.key});
@@ -22,78 +22,13 @@ class _MessagingScreenState extends State<MessagingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        RoundBox(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/group.svg",
-                          colorFilter: ColorFilter.mode(
-                              WatsoColor.primary, BlendMode.srcIn),
-                        ),
-                        Text("2/4명", style: WatsoFont.thinTitle),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset("assets/icons/direction.svg"),
-                          SizedBox(width: 8),
-                          Text(
-                            departure,
-                            style: WatsoFont.mainBody,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset("assets/icons/pin.svg"),
-                          SizedBox(width: 8),
-                          Text(
-                            destination,
-                            style: WatsoFont.mainBody,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TileContentBox(
-                      title: "출발 시간",
-                      content: "10:00AM",
-                    ),
-                    TileContentBox(
-                      title: "예상금액",
-                      content: "6200원",
-                    ),
-                    TileContentBox(
-                      title: "1인당 요금",
-                      content: "2100",
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+        RecuitInfoCard(
+          departure: departure,
+          destination: destination,
+          maxPeople: 4,
+          currentPeople: 3,
+          departTime: DateTime.now(),
+          estimatedCost: 20000,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
