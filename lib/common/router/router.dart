@@ -31,16 +31,17 @@ GoRouter myRouter(ref) {
       refreshListenable: isAuth,
       debugLogDiagnostics: true,
       redirect: (context, state) {
+        // 유저 정보를 불러올때까지 로딩...
         if (isAuth.value.isLoading || !isAuth.value.hasValue) {
           return Routes.splash.path;
         }
 
         final auth = isAuth.value.requireValue;
         if (state.uri.path == Routes.splash.path) {
-          return auth ? Routes.taxiMain.path : Routes.login.path;
+          return auth ? Routes.tMain.path : Routes.login.path;
         }
         if (state.uri.path == Routes.login.path) {
-          return auth ? Routes.taxiMain.path : null;
+          return auth ? Routes.tMain.path : null;
         }
         return auth ? null : Routes.login.path;
       });
@@ -65,39 +66,38 @@ final List<RouteBase> _routes = [
       builder: (BuildContext context, GoRouterState state, child) {
         return PageLayout(
           body: child,
-          location: state.fullPath ?? Routes.taxiMain.path,
+          location: state.fullPath ?? Routes.tMain.path,
         );
       },
       routes: [
         GoRoute(
-          path: Routes.taxiMain.path,
+          path: Routes.tMain.path,
           parentNavigatorKey: _shellNavigatorKey,
           builder: (BuildContext context, GoRouterState state) {
-            return Routes.taxiMain.screen;
+            return Routes.tMain.screen;
           },
         ),
         GoRoute(
-            path: Routes.messaging.path,
+            path: Routes.tMessaging.path,
             parentNavigatorKey: _shellNavigatorKey,
             builder: (BuildContext context, GoRouterState state) {
-              return Routes.messaging.screen;
+              return Routes.tMessaging.screen;
             }),
         GoRoute(
-            path: Routes.profile.path,
+            path: Routes.tHistory.path,
             parentNavigatorKey: _shellNavigatorKey,
             builder: (BuildContext context, GoRouterState state) {
-              return Routes.profile.screen;
+              return Routes.tHistory.screen;
             }),
       ]),
   GoRoute(
     path: Routes.recruitment(':pageId').path,
     parentNavigatorKey: _rootNavigatorKey,
     builder: (BuildContext context, GoRouterState state) {
+      if (state.pathParameters['pageId'] == null) {
+        return Routes.tMain.screen;
+      }
       return Routes.recruitment(state.pathParameters['pageId']!).screen;
     },
-  ),
-  GoRoute(
-    path: Routes.login.path,
-    builder: (context, state) => Routes.login.screen,
   ),
 ];

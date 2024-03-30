@@ -22,9 +22,9 @@ class PageLayout extends StatefulWidget {
 class _PageLayoutState extends State<PageLayout> {
   _location() {
     String path = widget.location;
-    if (path == Routes.taxiMain.path) return 0;
-    if (path == Routes.messaging.path) return 1;
-    if (path == Routes.profile.path) return 2;
+    if (path == Routes.tMain.path) return 0;
+    if (path == Routes.tMessaging.path) return 1;
+    if (path == Routes.tHistory.path) return 2;
   }
 
   @override
@@ -80,9 +80,16 @@ class _PageLayoutState extends State<PageLayout> {
           ],
         ),
         body: Stack(children: [
-          Container(
-            height: 100,
-            color: WatsoColor.primary,
+          CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 100,
+                  color: WatsoColor.primary,
+                ),
+              ),
+              SliverFillRemaining()
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -103,7 +110,7 @@ class _PageLayoutState extends State<PageLayout> {
             children: [
               InkWell(
                 onTap: () {
-                  context.go(Routes.taxiMain.path);
+                  context.go(Routes.tMain.path);
                 },
                 child: Container(
                   height: 32,
@@ -121,7 +128,7 @@ class _PageLayoutState extends State<PageLayout> {
               ),
               InkWell(
                 onTap: () {
-                  context.go(Routes.messaging.path);
+                  context.go(Routes.tMessaging.path);
                 },
                 child: SvgPicture.asset(
                   'assets/icons/bigtalk.svg',
@@ -135,7 +142,7 @@ class _PageLayoutState extends State<PageLayout> {
               ),
               InkWell(
                 onTap: () {
-                  context.go(Routes.profile.path);
+                  context.go(Routes.tHistory.path);
                 },
                 child: SvgPicture.asset(
                   'assets/icons/profile.svg',
