@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:watso/widgets.dart';
+import 'widgets.dart';
 
 void main() {
   runApp(const MyApp());
