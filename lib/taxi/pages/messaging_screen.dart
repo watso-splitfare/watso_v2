@@ -5,6 +5,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart' show Svg;
 import '../../common/constants/styles.dart';
 import '../../common/widgets/Boxes.dart';
 import '../../common/widgets/Buttons.dart';
+import '../widgets/receipt_dialog.dart';
 
 class MessagingScreen extends StatefulWidget {
   const MessagingScreen({super.key});
@@ -99,7 +100,13 @@ class _MessagingScreenState extends State<MessagingScreen> {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: PrimaryBtn(
             minimumSize: Size(double.infinity, 48),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const ReceiptDialog(payment: 6300, hc: 3);
+                  });
+            },
             text: "탑승자 확정하기",
           ),
         ),
