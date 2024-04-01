@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CustomInterceptors extends InterceptorsWrapper {
-  // final FlutterSecureStorage storage;
+  final FlutterSecureStorage storage;
   final Ref ref;
 
   CustomInterceptors({
-    // required this.storage,
+    required this.storage,
     required this.ref,
   });
 
