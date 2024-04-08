@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -15,13 +17,15 @@ GoRouter myRouter(ref) {
   final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
   ref
     ..onDispose(() => isAuth.dispose())
-    ..listen(authControllerProvider, (_, isAuthValue) {
+    ..listen(authControllerProvider, (_, authValue) {
       // isAuthValue is null
-      if (isAuthValue == null) {
+      log('authValue: ${authValue.value}');
+      if (authValue.value == null) {
         isAuth.value = const AsyncData(false);
       } else {
         isAuth.value = const AsyncData(true);
       }
+      log('isAuth: ${isAuth.value.value}');
     });
 
   return GoRouter(
