@@ -16,12 +16,12 @@ class CustomInterceptors extends InterceptorsWrapper {
   });
 
   @override
-  void onRequest(
+  Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
-  ) {
+  ) async {
     log('[REQ] [${options.method}] ${options.uri} ${options.data} ${options.headers}');
-    final accessToken = storage.read(key: AuthToken.accessToken.name);
+    final accessToken = await storage.read(key: AuthToken.accessToken.name);
 
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
