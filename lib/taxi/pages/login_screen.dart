@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/constants/styles.dart';
+import '../../common/user/user_provider.dart';
 import '../../common/widgets/Boxes.dart';
 
-// var options = BaseOptions(
-//   //https://
-//   baseUrl: 'http://222.116.20.108:8000/api',
-//   connectTimeout: Duration(seconds: 5),
-//   receiveTimeout: Duration(seconds: 5),
-// );
-//
-// Dio dio = Dio(options);
-
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  @override
-  Widget build(BuildContext context) {
-    //   kakao login
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Stack(children: [
         Column(
@@ -54,17 +40,44 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: () async {
                       try {
-                        OAuthToken token =
-                            await UserApi.instance.loginWithKakaoTalk();
-                        print('카카오톡으로 로그인 성공 ${token.accessToken}');
-                        print(token.idToken);
-                        // var response = await dio
-                        //     .get('/auth/kakao-login', queryParameters: {
-                        //   'access_token': token.accessToken,
-                        // });
-                        // print(response.data);
+                        await ref
+                            .read(authControllerProvider.notifier)
+                            .loginWithKakao();
+                        // show alert dialog
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('로그인 성공'),
+                                content: Text('로그인에 성공했습니다.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('확인'),
+                                  ),
+                                ],
+                              );
+                            });
                       } catch (error) {
                         print('카카오톡으로 로그인 실패 $error');
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('로그인 실패'),
+                                content: Text('로그인에 실패했습니다.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('확인'),
+                                  ),
+                                ],
+                              );
+                            });
                       }
                     },
                     child: Text("카카오 로그인"),

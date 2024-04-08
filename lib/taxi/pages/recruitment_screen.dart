@@ -142,7 +142,7 @@ class _TaxiRecruitmentScreenState extends State<TaxiRecruitmentScreen> {
                 child: PrimaryBtn(
                   minimumSize: Size(double.infinity, 48),
                   onPressed: () {
-                    context.go(Routes.messaging.path);
+                    context.go(Routes.tMessaging.path);
                   },
                   text: "탑승하기",
                 ),
