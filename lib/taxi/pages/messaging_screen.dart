@@ -9,10 +9,6 @@ class MessagingScreen extends StatelessWidget {
 
   final String? pageId;
 
-  // final String departure = "부산대";
-  //
-  // final String destination = "밀양역";
-
   @override
   Widget build(BuildContext context) {
     if (pageId == null) {
