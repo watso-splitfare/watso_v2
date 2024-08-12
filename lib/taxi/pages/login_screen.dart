@@ -32,11 +32,11 @@ class LoginScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "왓소 로그인",
+                    "왓소",
                     textAlign: TextAlign.center,
-                    style: WatsoFont.title,
+                    style: WatsoFont.title.copyWith(fontSize: 20),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: WatsoColor.primary,

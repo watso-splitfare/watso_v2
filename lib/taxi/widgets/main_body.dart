@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:watso_v2/common/utils/utils.dart';
 
 import '../../common/constants/styles.dart';
 import '../../common/router/routes.dart';
@@ -11,13 +12,6 @@ import '../provider/main_providers.dart';
 
 class MainBody extends ConsumerWidget {
   const MainBody({super.key});
-
-  String convertHHMM(DateTime date) {
-    if (date.hour > 12) {
-      return "${date.hour - 12}:${date.minute}PM";
-    }
-    return "${date.hour}:${date.minute}AM";
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,7 +84,7 @@ class MainBody extends ConsumerWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(convertHHMM(group.departDatetime)),
+                              Text(convertTimeAMPM(group.departDatetime)),
                               Text("6200원"),
                               Row(
                                 mainAxisSize: MainAxisSize.min,
