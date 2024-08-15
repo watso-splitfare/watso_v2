@@ -21,6 +21,7 @@ abstract class TaxiRepository {
   Future<List<TaxiGroup>> getTaxiGroups({
     @Query('direction') required TaxiDirection direction,
     @Query('depart_datetime') required DateTime departDatetime,
+    @Query('option') String option = 'JOINABLE',
   });
 
   @GET('/taxi/{id}')
