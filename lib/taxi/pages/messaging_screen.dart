@@ -18,11 +18,10 @@ class MessagingScreen extends StatelessWidget {
         child: Text("참여 중인 택시가 없습니다"),
       );
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        MessagingHeader(pageId: pageId!),
-        Expanded(child: MessagingBody(pageId: pageId!))
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: MessagingHeader(pageId: pageId!)),
+        SliverFillRemaining(child: MessagingBody(pageId: pageId!)),
       ],
     );
   }
