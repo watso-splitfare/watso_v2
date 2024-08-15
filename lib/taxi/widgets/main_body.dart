@@ -80,7 +80,10 @@ class MainBody extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Divider(),
+                          Divider(
+                            color: Colors.grey[300],
+                            thickness: 1,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -102,10 +105,13 @@ class MainBody extends ConsumerWidget {
             ],
           );
         }, error: (err, stack) {
+          print(err);
+          print(stack);
           return AngularBox(
               margin: EdgeInsets.only(bottom: 16.0),
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Text("에러가 발생했습니다"));
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+              child: Text("에러가 발생했습니다" + err.toString()));
         }, loading: () {
           return Padding(
             padding: const EdgeInsets.all(20.0),
