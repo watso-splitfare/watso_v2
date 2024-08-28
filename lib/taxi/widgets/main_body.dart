@@ -8,7 +8,7 @@ import '../../common/constants/styles.dart';
 import '../../common/router/routes.dart';
 import '../../common/widgets/Boxes.dart';
 import '../model/taxi_model.dart';
-import '../provider/main_providers.dart';
+import '../provider/main_provider.dart';
 
 class MainBody extends ConsumerWidget {
   const MainBody({super.key});
@@ -25,8 +25,8 @@ class MainBody extends ConsumerWidget {
           child: Text("택시리스트", style: WatsoFont.title),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text("출발도착지 ∙ 출발 시간 ∙ 총요금 ∙  정원",
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(" 출발 시간 ∙ 도착지  ∙ 요금 ∙  정원",
               style: TextStyle(color: Colors.grey[600], fontSize: 11)),
         ),
         groups.when(data: (data) {
@@ -50,30 +50,25 @@ class MainBody extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Column(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                Text(convertTimeAMPM(group.departDatetime),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 24),
                                 Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                        "assets/icons/direction.svg"),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      group.direction == TaxiDirection.CAMPUS
-                                          ? TaxiDirection.STATION.toKorean()
-                                          : TaxiDirection.CAMPUS.toKorean(),
-                                    ),
-                                  ],
-                                ),
-                                Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SvgPicture.asset("assets/icons/pin.svg"),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: 4),
                                     Text(
-                                      group.direction.toKorean(),
+                                      group.direction.toKorean() + '행',
                                     ),
                                   ],
                                 ),
@@ -84,19 +79,34 @@ class MainBody extends ConsumerWidget {
                             color: Colors.grey[300],
                             thickness: 1,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(convertTimeAMPM(group.departDatetime)),
-                              Text("6200원"),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text("1/4명"),
-                                  SvgPicture.asset("assets/icons/group.svg"),
-                                ],
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "참여 시 예상 금액 :  ",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                    Text('${group.fee.cost}원')
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset("assets/icons/group.svg"),
+                                    SizedBox(width: 4),
+                                    Text("1/4명"),
+                                  ],
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),

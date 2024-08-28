@@ -27,6 +27,24 @@ class CreateTaxiGroup with _$CreateTaxiGroup {
       _$CreateTaxiGroupFromJson(json);
 }
 
+// {
+// "id": 1719843797268,
+// "owner_id": 1719843797268,
+// "status": "OPEN",
+// "direction": "CAMPUS",
+// "depart_datetime": "2024-08-25T18:06:37",
+// "fee": {
+// "total": 6200,
+// "cost": 3100
+// },
+// "member": {
+// "current_member": 1,
+// "max_member": 4,
+// "members": [
+// 1719843797268
+// ]
+// }
+// }
 @freezed
 class TaxiGroup with _$TaxiGroup {
   const factory TaxiGroup({
@@ -35,7 +53,7 @@ class TaxiGroup with _$TaxiGroup {
     required TaxiStatus status,
     required DateTime departDatetime,
     required TaxiDirection direction,
-    required int fee,
+    required TaxiFee fee,
     required TaxiMember member,
   }) = _TaxiGroup;
 
@@ -43,25 +61,21 @@ class TaxiGroup with _$TaxiGroup {
       _$TaxiGroupFromJson(json);
 }
 
+@freezed
+class TaxiFee with _$TaxiFee {
+  const factory TaxiFee({
+    required int total,
+    required int cost,
+  }) = _TaxiFee;
+
+  factory TaxiFee.fromJson(Map<String, dynamic> json) =>
+      _$TaxiFeeFromJson(json);
+}
+
 enum TaxiStatus { OPEN, CLOSE, SETTLE, COMPLETE }
 
 // TaxiStatus enum에 대한 확장 메서드 정의
 extension TaxiStatusExtension on TaxiStatus {
-  // toSmall 메서드 정의
-  String toPath() {
-    // 각 enum 값을 소문자 문자열로 변환하여 반환
-    switch (this) {
-      case TaxiStatus.OPEN:
-        return 'open';
-      case TaxiStatus.CLOSE:
-        return 'close';
-      case TaxiStatus.SETTLE:
-        return 'settle';
-      case TaxiStatus.COMPLETE:
-        return 'complete';
-    }
-  }
-
   String toKr() {
     switch (this) {
       case TaxiStatus.OPEN:

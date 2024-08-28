@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:watso_v2/common/constants/styles.dart';
 import 'package:watso_v2/taxi/model/taxi_model.dart';
 
-import '../provider/create_providers.dart';
-import '../provider/main_providers.dart';
+import '../provider/create_provider.dart';
+import '../provider/main_provider.dart';
 import '../repository/taxi_repository.dart';
 
 class CreateScreen extends ConsumerWidget {

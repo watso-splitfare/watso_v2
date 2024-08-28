@@ -6,7 +6,7 @@ import 'package:watso_v2/taxi/model/taxi_model.dart';
 
 import '../../common/constants/styles.dart';
 import '../../common/widgets/Boxes.dart';
-import '../provider/main_providers.dart';
+import '../provider/main_provider.dart';
 
 class MainHeader extends ConsumerWidget {
   const MainHeader({super.key});

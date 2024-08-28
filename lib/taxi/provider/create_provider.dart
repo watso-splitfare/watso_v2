@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../model/taxi_model.dart';
 
-part 'create_providers.g.dart';
+part 'create_provider.g.dart';
 
 @riverpod
 class CreateTaxi extends _$CreateTaxi {

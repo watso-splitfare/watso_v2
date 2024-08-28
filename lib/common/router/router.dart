@@ -88,14 +88,10 @@ final List<RouteBase> _routes = [
           },
         ),
         GoRoute(
-            path: Routes.tMessaging(id: ':pageId').path,
+            path: Routes.tJoined.path,
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (BuildContext context, GoRouterState state) {
-              // return Routes.tRecruit(state.pathParameters['pageId']!).screen;
-
-              return NoTransitionPage(
-                  child: Routes.tMessaging(id: state.pathParameters['pageId'])
-                      .screen);
+              return NoTransitionPage(child: Routes.tJoined.screen);
             }),
         GoRoute(
             path: Routes.tHistory.path,
@@ -109,6 +105,14 @@ final List<RouteBase> _routes = [
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) {
         return Routes.tCreate.screen;
+      }),
+  GoRoute(
+      path: Routes.tJoinedDetail(':pageId').path,
+      parentNavigatorKey: _shellNavigatorKey,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return NoTransitionPage(
+            child:
+                Routes.tJoinedDetail(state.pathParameters['pageId']!).screen);
       }),
   GoRoute(
     path: Routes.tRecruit(':pageId').path,

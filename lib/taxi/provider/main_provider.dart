@@ -3,7 +3,7 @@ import 'package:watso_v2/taxi/repository/taxi_repository.dart';
 
 import '../model/taxi_model.dart';
 
-part 'main_providers.g.dart';
+part 'main_provider.g.dart';
 
 @riverpod
 class FilterOptions extends _$FilterOptions {

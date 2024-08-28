@@ -9,7 +9,7 @@ import '../../common/widgets/Buttons.dart';
 class MessagingBody extends ConsumerWidget {
   const MessagingBody({super.key, required this.pageId});
 
-  final String pageId;
+  final int pageId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

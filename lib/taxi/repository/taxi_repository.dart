@@ -24,9 +24,17 @@ abstract class TaxiRepository {
     @Query('option') String option = 'JOINABLE',
   });
 
+  @GET('/taxi')
+  Future<List<TaxiGroup>> getCompletedTaxiGroups();
+
+  @GET('/taxi')
+  Future<List<TaxiGroup>> getJoinedTaxiGroups({
+    @Query('option') String option = 'JOINED',
+  });
+
   @GET('/taxi/{id}')
   Future<TaxiGroup> getTaxiGroup({
-    @Path() required String id,
+    @Path() required int id,
   });
 
   @POST('/taxi')
@@ -36,28 +44,28 @@ abstract class TaxiRepository {
 
   @PATCH('/taxi/{id}/{status}')
   Future<void> updateTaxiGroup({
-    @Path() required String id,
+    @Path() required int id,
     @Path() required String status,
   });
 
   @POST('/taxi/{id}/member')
   Future<void> joinTaxiGroup({
-    @Path() required String id,
+    @Path() required int id,
   });
 
   @DELETE('/taxi/{id}/member')
   Future<void> leaveTaxiGroup({
-    @Path() required String id,
+    @Path() required int id,
   });
 
   @GET('/taxi/{id}/fee')
   Future<TaxiTotalFee> getFee({
-    @Path() required String id,
+    @Path() required int id,
   });
 
   @PATCH('/taxi/{id}/fee')
   Future<void> updateFee({
-    @Path() required String id,
+    @Path() required int id,
     @Body() required TaxiTotalFee totalFee,
   });
 }
