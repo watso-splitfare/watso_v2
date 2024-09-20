@@ -9,29 +9,90 @@ class AdjustmentDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totalAmount = ref.watch(totalAmountProvider);
+    final totalAmount = ref.watch(totalAmountControllerProvider);
+    final totalAmountControllers = ref.watch(totalAmountControllerProvider.notifier);
     final percentageControllers = ref.watch(percentageControllersProvider);
     final isWarningVisible = ref.watch(isWarningVisibleProvider);
 
     return AlertDialog(
       content: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('정산하기',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             SizedBox(height: 16),
-            _buildRow('총 결제 금액', totalAmount, ref),
-            ...List.generate(percentageControllers.length, (index) {
+            Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('총 결제 금액', style: TextStyle(fontSize: 16),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        width: 80,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.grey[100],
+                          ),
+                          textAlign: TextAlign.center,
+                          controller: totalAmountControllers.controller,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Text('원'),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('총 인원', style: TextStyle(fontSize: 16),),
+                  Text('${percentageControllers.length} 명'),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('1인당 요금', style: TextStyle(fontSize: 16),),
+                  Text('${(totalAmount/members.length).ceil()} 원'), // 소수점 올림
+                ],
+              ),
+            ),
+            Divider(),
+            ...List.generate(members.length, (index) {
               return _buildPersonRow(ref, index);
             }),
+            Divider(),
             if (isWarningVisible)
               Text(
-                '총 결제 금액과 입력한 개인 요금의 합이 일치하지 않습니다.',
-                style: TextStyle(color: Colors.red),
+                '총 결제 금액과 입력한 개인 요금의 합이\n일치하지 않습니다.',
+                style: TextStyle(color: Colors.red, fontSize: 14),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis, // 줄이 넘칠 경우
               ),
-            ElevatedButton(
-              onPressed: () => _handleAdjustmentRequest(context, ref),
-              child: Text('정산 요청'),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange, //   버튼 색상
+                  // padding: EdgeInsets.symmetric(horizontal: 40, vertical: 0),
+                ),
+                onPressed: () => _checkAmountSum(context, ref),
+                child: Text('정산 요청', style: TextStyle(color: Colors.white)),
+              ),
             ),
           ],
         ),
@@ -39,27 +100,28 @@ class AdjustmentDialog extends ConsumerWidget {
     );
   }
 
-  Widget _buildRow(String label, int totalAmount, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: TextStyle(fontSize: 16)),
-        Text('$totalAmount 원'),
-      ],
-    );
-  }
-
   Widget _buildPersonRow(WidgetRef ref, int index) {
-    final role = ref.watch(roleProvider);
     final percentageControllers = ref.watch(percentageControllersProvider);
     final amountControllers = ref.watch(amountControllersProvider);
 
     if (role == 'OWNER') {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildEditableField(ref, percentageControllers, index),
-          _buildEditableAmountField(ref, amountControllers, index),
+          Text(
+            members[index],
+            style: TextStyle(
+              fontSize: 12,
+              color: Color(0xFF767676),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildEditableField(ref, percentageControllers, index),
+              _buildEditableAmountField(ref, amountControllers, index),
+            ],
+          ),
         ],
       );
     } else {
@@ -76,31 +138,55 @@ class AdjustmentDialog extends ConsumerWidget {
   // owner
   Widget _buildEditableField(WidgetRef ref,
       List<TextEditingController> controllers, int index) {
-    return Container(
-      width: 50,
-      child: TextField(
-        controller: controllers[index],
-        keyboardType: TextInputType.number,
-        onChanged: (value) {
-          ref.read(percentageControllersProvider.notifier).updateController(
-              index, value);
-        },
-      ),
+    return Row(
+      children: [
+        Container(
+          width: 50,
+          child: TextField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              filled: true,
+              fillColor: Colors.grey[100],
+            ),
+            textAlign: TextAlign.center,
+            controller: controllers[index],
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              ref.read(percentageControllersProvider.notifier).updateController(
+                  index, value);
+            },
+          ),
+        ),
+        SizedBox(width: 8),
+        Text('%')
+      ],
     );
   }
 
   Widget _buildEditableAmountField(WidgetRef ref,
       List<TextEditingController> controllers, int index) {
-    return Container(
-      width: 80,
-      child: TextField(
-        controller: controllers[index],
-        keyboardType: TextInputType.number,
-        onChanged: (value) {
-          ref.read(amountControllersProvider.notifier).updateController(
-              index, value);
-        },
-      ),
+    return Row(
+      children: [
+        Container(
+          width: 80,
+          child: TextField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              filled: true,
+              fillColor: Colors.grey[100],
+            ),
+            textAlign: TextAlign.center,
+            controller: controllers[index],
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              ref.read(amountControllersProvider.notifier).updateController(
+                  index, value);
+            },
+          ),
+        ),
+        SizedBox(width: 8),
+        Text('원'),
+      ],
     );
   }
 
@@ -121,7 +207,25 @@ class AdjustmentDialog extends ConsumerWidget {
     );
   }
 
-  void _handleAdjustmentRequest(BuildContext context, WidgetRef ref) {
-    // 정산 요청
+  void _checkAmountSum(BuildContext context, WidgetRef ref) {
+    final amountControllers = ref.read(amountControllersProvider.notifier);
+
+    int amountSum = amountControllers.getAmountSum();
+    int totalAmount = ref.read(totalAmountControllerProvider);
+
+    if (amountSum != totalAmount) {
+      debugPrint('불일치');
+      ref.read(isWarningVisibleProvider.notifier).state = true;
+    } else {
+      ref.read(isWarningVisibleProvider.notifier).state = false;
+      debugPrint('일치.');
+
+      final amounts = amountControllers.getAmounts();
+      _returnAmounts(context, amounts);
+    }
+  }
+
+  void _returnAmounts(BuildContext context, List<int> amounts) {
+    Navigator.of(context).pop(amounts);
   }
 }
