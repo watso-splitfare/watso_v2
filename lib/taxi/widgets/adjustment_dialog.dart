@@ -221,11 +221,39 @@ class AdjustmentDialog extends ConsumerWidget {
       debugPrint('일치.');
 
       final amounts = amountControllers.getAmounts();
-      _returnAmounts(context, amounts);
+      // _returnAmounts(context, amounts);
+      final membersData = _buildReturnData(ref, amounts);
+      Future.delayed(Duration.zero, () {
+        _returnAmounts(context, totalAmount, membersData);
+      });
+      // _returnAmounts(context, totalAmount, membersData);
     }
   }
 
-  void _returnAmounts(BuildContext context, List<int> amounts) {
-    Navigator.of(context).pop(amounts);
+  Map<String, dynamic> _buildReturnData(WidgetRef ref, List<int> amounts) {
+    final List<Map<String, dynamic>> membersData = [];
+    for (int i = 0; i < members.length; i++) {
+      membersData.add({
+        "id": membersId[i],
+        "nickname": members[i],
+        "cost": amounts[i],
+      });
+    }
+    return {
+      "fare": ref.read(totalAmountControllerProvider),
+      "members": membersData,
+    };
+  }
+
+  // void _returnAmounts(BuildContext context, List<int> amounts) {
+  //   Navigator.of(context).pop(amounts);
+  // }
+  void _returnAmounts(BuildContext context, int fare, Map<String, dynamic> membersData) {
+    if (Navigator.canPop(context)) {  // pop 할 수 있는지 확인
+      Navigator.of(context).pop({
+        "fare": fare,
+        "members": membersData['members'],
+      });
+    }
   }
 }

@@ -6,6 +6,7 @@ const role = 'OWNER';
 
 // 멤버
 const List<String> members = ["찰봉", "준하", "창욱", "민지"];
+const List<String> membersId = ["123", "234", "345", "456"];
 
 // 총 결제 금액
 final totalAmountControllerProvider = StateNotifierProvider<TotalAmountControllerNotifier, int>((ref) {
